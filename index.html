@@ -296,5 +296,22 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js").catch(e => console.warn("SW failed", e));
 }
 </script>
+
+<!-- کادر نمایش خطا (برای دیباگ) -->
+<div id="errorBox" style="display:none;position:fixed;top:0;left:0;right:0;background:#EF4444;color:white;padding:16px;z-index:99999;font-size:12px;direction:ltr;">
+  <strong>⚠️ Error:</strong> <span id="errorText"></span>
+  <button onclick="document.getElementById('errorBox').style.display='none'" style="float:right;background:white;color:#EF4444;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;">×</button>
+</div>
+<script>
+window.addEventListener('error', function(e) {
+  document.getElementById('errorBox').style.display = 'block';
+  document.getElementById('errorText').textContent = e.message + ' (at line ' + e.lineno + ')';
+});
+window.addEventListener('unhandledrejection', function(e) {
+  document.getElementById('errorBox').style.display = 'block';
+  document.getElementById('errorText').textContent = 'Promise: ' + e.reason;
+});
+</script>
+
 </body>
 </html>
