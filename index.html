@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#2563EB">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="رتبه">
+<title>سوپر اپلیکیشن جامع رتبه (حقوق)</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ═══════════ اسپلش (لودینگ) ═══════════ -->
+<div id="splash" class="splash-screen">
+  <div class="logo-circle" style="width:120px;height:120px;">
+    <span style="font-size:70px;">R</span>
+  </div>
+  <h1 style="margin-top:20px;">سوپر اپلیکیشن جامع رتبه</h1>
+  <p class="subtitle">(حقوق)</p>
+  <div class="loader" style="margin-top:40px;width:40px;height:40px;border-width:4px;"></div>
+  <p id="splashStatus" class="subtitle" style="margin-top:16px;">در حال بارگذاری...</p>
+</div>
+
+<!-- ═══════════ صفحه لاگین ═══════════ -->
+<div id="loginSection" class="section">
+  <div class="container">
+    <div style="padding-top:40px;">
+      <div class="glass-card">
+        <div class="logo-circle"><span>R</span></div>
+        <h1>فعال‌سازی اشتراک</h1>
+        <p class="subtitle">کد اشتراکی که ادمین برای شما ساخته را وارد کنید</p>
+
+        <div class="form-group">
+          <label class="form-label">کد اشتراک</label>
+          <input type="text" id="loginCode" class="ltr" placeholder="RTB-V-90-XXXX-XXXX" autocomplete="off">
+        </div>
+
+        <div id="loginError" class="alert-error" style="display:none;"></div>
+
+        <button class="btn btn-accent" id="loginBtn" onclick="App.login()">فعال‌سازی و ورود</button>
+
+        <div style="text-align:center;margin-top:20px;">
+          <p style="font-size:12px;color:var(--text-muted);">Device ID دستگاه شما:</p>
+          <p id="deviceIdDisplay" style="font-family:monospace;font-size:18px;font-weight:bold;letter-spacing:3px;color:var(--accent);margin-top:4px;">...</p>
+          <button onclick="App.copyDeviceId()" style="background:transparent;border:none;color:var(--accent);font-size:12px;margin-top:8px;cursor:pointer;">📋 کپی</button>
+        </div>
+
+        <div style="text-align:center;margin-top:24px;">
+          <a href="admin.html" style="color:var(--text-muted);font-size:13px;text-decoration:none;">🔐 ورود ادمین</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ داشبورد ═══════════ -->
+<div id="dashboardSection" class="section">
+  <div class="container">
+    <div class="app-header">
+      <div class="header-title">داشبورد</div>
+      <div style="display:flex;gap:8px;">
+        <button class="header-btn" onclick="App.showHelp('dashboard')">?</button>
+        <button class="header-btn" onclick="App.logout()">🚪</button>
+      </div>
+    </div>
+
+    <div class="welcome-card">
+      <h2>خوش آمدی! 🎯</h2>
+      <div style="margin-top:12px;">
+        <span class="badge" id="planBadge">اشتراک: ---</span>
+        <span class="badge" id="daysBadge">--- روز</span>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-value" id="statStreak">0</div>
+        <div class="stat-label">استریک</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-value" id="statProgress">0%</div>
+        <div class="stat-label">پیشرفت</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-value" id="statAttempts">0</div>
+        <div class="stat-label">آزمون‌ها</div>
+      </div>
+    </div>
+
+    <div class="menu-grid">
+      <div class="menu-item" onclick="App.goTo('exam')">
+        <div class="menu-icon">📖</div>
+        <div class="menu-label">آزمون جدید</div>
+      </div>
+      <div class="menu-item" onclick="App.goTo('wrong')">
+        <div class="menu-icon">❌</div>
+        <div class="menu-label">دفتر اشتباهات</div>
+      </div>
+      <div class="menu-item" onclick="App.goTo('chat')">
+        <div class="menu-icon">🤖</div>
+        <div class="menu-label">دستیار هوشمند</div>
+      </div>
+      <div class="menu-item" onclick="App.goTo('about')">
+        <div class="menu-icon">ℹ️</div>
+        <div class="menu-label">درباره ما</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ آزمون - انتخاب ═══════════ -->
+<div id="examSection" class="section">
+  <div class="container">
+    <div class="app-header">
+      <button class="header-btn" onclick="App.goTo('dashboard')">←</button>
+      <div class="header-title">آزمون جدید</div>
+      <button class="header-btn" onclick="App.showHelp('exam')">?</button>
+    </div>
+    <div id="examCategories"></div>
+    <div id="examSubjects" class="hidden"></div>
+    <button class="btn btn-primary hidden" id="startExamBtn" onclick="App.startExam()">شروع آزمون</button>
+  </div>
+</div>
+
+<!-- ═══════════ آزمون - داخل آزمون ═══════════ -->
+<div id="quizSection" class="section">
+  <div class="container">
+    <div class="app-header">
+      <div class="header-title" id="quizCounter">سوال 1 از 10</div>
+      <button class="header-btn" onclick="App.showHelp('quiz')">?</button>
+    </div>
+    <div style="height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:20px;">
+      <div id="quizProgress" style="height:100%;width:10%;background:linear-gradient(90deg,#2563EB,#06B6D4);border-radius:3px;transition:0.3s;"></div>
+    </div>
+    <div class="glass-card">
+      <p id="quizQuestion" style="font-size:16px;font-weight:bold;margin-bottom:20px;"></p>
+      <div id="quizOptions"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="btn btn-secondary" id="prevBtn" onclick="App.prevQuestion()">قبلی</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="App.nextQuestion()">بعدی</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ نتیجه آزمون ═══════════ -->
+<div id="resultSection" class="section">
+  <div class="container">
+    <div class="app-header">
+      <button class="header-btn" onclick="App.goTo('dashboard')">←</button>
+      <div class="header-title">نتیجه آزمون</div>
+      <button class="header-btn" onclick="App.showHelp('result')">?</button>
+    </div>
+    <div class="glass-card" style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:60px;">🎯</div>
+      <h1 id="resultScore" style="margin-top:12px;color:var(--success);">---</h1>
+      <p class="subtitle" id="resultMessage"></p>
+    </div>
+    <div id="resultDetails"></div>
+    <button class="btn btn-primary" onclick="App.goTo('exam')" style="margin-top:20px;">آزمون جدید</button>
+  </div>
+</div>
+
+<!-- ═══════════ دفتر اشتباهات ═══════════ -->
+<div id="wrongSection" class="section">
+  <div class="container">
+    <div class="app-header">
+      <button class="header-btn" onclick="App.goTo('dashboard')">←</button>
+      <div class="header-title">دفتر اشتباهات</div>
+      <button class="header-btn" onclick="App.showHelp('wrong')">?</button>
+    </div>
+    <div id="wrongList"></div>
+  </div>
+</div>
+
+<!-- ═══════════ دستیار هوشمند ═══════════ -->
+<div id="chatSection" class="section" style="padding-bottom:80px;">
+  <div class="container">
+    <div class="app-header">
+      <button class="header-btn" onclick="App.goTo('dashboard')">←</button>
+      <div class="header-title">دستیار هوشمند</div>
+      <button class="header-btn" onclick="App.showHelp('chat')">?</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="سوال خود را بنویسید..." onkeypress="if(event.key==='Enter')App.sendChat()">
+    <button class="chat-send" onclick="App.sendChat()">➤</button>
+  </div>
+</div>
+
+<!-- ═══════════ درباره ما ═══════════ -->
+<div id="aboutSection" class="section">
+  <div class="container">
+    <div class="app-header">
+      <button class="header-btn" onclick="App.goTo('dashboard')">←</button>
+      <div class="header-title">درباره ما</div>
+      <button class="header-btn" onclick="App.showHelp('about')">?</button>
+    </div>
+
+    <div class="glass-card" style="text-align:center;margin-bottom:16px;">
+      <div class="logo-circle"><span>R</span></div>
+      <h1>سوپر اپلیکیشن جامع رتبه</h1>
+      <p class="subtitle">(حقوق) - نسخه ۲.۰</p>
+    </div>
+
+    <div class="card">
+      <h3 style="color:var(--accent);margin-bottom:16px;">🤝 شرکای تجاری</h3>
+
+      <div style="background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.3);border-radius:12px;padding:16px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;">👤</div>
+          <strong style="color:var(--primary);">دکتر سید میلاد حسینی</strong>
+        </div>
+        <p style="font-size:13px;margin-right:46px;">طراح، سازنده، توسعه‌دهنده، برنامه‌نویس و سئوکار</p>
+        <p style="font-size:12px;color:var(--text-muted);margin-right:46px;font-style:italic;">جزو ۱۰ نفر اول دانشگاه</p>
+      </div>
+
+      <div style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.3);border-radius:12px;padding:16px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;">👤</div>
+          <strong style="color:var(--accent);">دکتر یاسر کریمی مهرآبادی</strong>
+        </div>
+        <p style="font-size:13px;margin-right:46px;">بخش مالی و بازاریابی</p>
+        <p style="font-size:12px;color:var(--text-muted);margin-right:46px;font-style:italic;">دکترای حقوق و حقوق بین‌الملل</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="color:var(--accent);margin-bottom:16px;">📞 تماس با پشتیبانی</h3>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(37,99,235,0.2);display:flex;align-items:center;justify-content:center;">📱</div>
+        <div>
+          <p style="font-size:12px;color:var(--text-muted);">دکتر حسینی</p>
+          <p style="font-family:monospace;font-size:15px;color:var(--primary);font-weight:bold;direction:ltr;" onclick="App.copyToClipboard('09331359586')">09331359586</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 0;">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(37,99,235,0.2);display:flex;align-items:center;justify-content:center;">📱</div>
+        <div>
+          <p style="font-size:12px;color:var(--text-muted);">دکتر کریمی</p>
+          <p style="font-family:monospace;font-size:15px;color:var(--primary);font-weight:bold;direction:ltr;" onclick="App.copyToClipboard('09123031600')">09123031600</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <p style="font-size:12px;color:var(--text-muted);line-height:1.8;">
+        شامل ۵ مقصد اختصاصی (وکالت، قضاوت، سردفتری، ارشد، دکتری)<br>
+        با بانک ۹۳۹ سوال تفکیک‌شده، آزمون آزمایشی،<br>
+        کارنامه تحلیلی، دفتر اشتباهات و دستیار هوشمند
+      </p>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:12px;">© ۱۴۰۳ - تمامی حقوق محفوظ است</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ مودال آپدیت اجباری ═══════════ -->
+<div id="updateModal" class="tutorial-overlay hidden">
+  <div class="tutorial-box" style="border-color:var(--warning);">
+    <h3 style="color:var(--warning);">🚀 آپدیت جدید موجود است</h3>
+    <p id="updateMessage">لطفاً برای ادامه، نسخه جدید را نصب کنید.</p>
+    <button class="tutorial-btn" style="background:var(--warning);" onclick="App.openUpdateLink()">📥 دانلود از کانال روبیکا</button>
+  </div>
+</div>
+
+<!-- ═══════════ مودال راهنما ═══════════ -->
+<div id="helpModal" class="tutorial-overlay hidden">
+  <div class="tutorial-box">
+    <h3 id="helpTitle">راهنما</h3>
+    <p id="helpText"></p>
+    <button class="tutorial-btn" onclick="App.closeHelp()">متوجه شدم</button>
+  </div>
+</div>
+
+<!-- ═══════════ مودال اتصال اینترنت ═══════════ -->
+<div id="noInternetModal" class="tutorial-overlay hidden">
+  <div class="tutorial-box" style="border-color:var(--danger);text-align:center;">
+    <h3 style="color:var(--danger);">🌐 اتصال اینترنت برقرار نیست</h3>
+    <p>برای باز شدن اپلیکیشن، ابتدا اینترنت خود را روشن کنید.</p>
+    <button class="tutorial-btn" style="background:var(--danger);color:white;" onclick="location.reload()">🔄 تلاش مجدد</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").catch(e => console.warn("SW failed", e));
+}
+</script>
+</body>
+</html>

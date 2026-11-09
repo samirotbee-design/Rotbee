@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#4C1D95">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rotbee Admin">
+<title>پنل مدیریت Rotbee</title>
+<link rel="manifest" href="manifest-admin.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ═══════════ صفحه ورود ادمین ═══════════ -->
+<div id="loginAdminSection" class="section active">
+  <div class="container">
+    <div style="padding-top:60px;">
+      <div class="glass-card">
+        <div class="logo-circle" style="background:linear-gradient(135deg,#7C3AED,#4C1D95);">
+          <span>🔐</span>
+        </div>
+        <h1>پنل مدیریت ارشد</h1>
+        <p class="subtitle">ورود به سیستم مدیریت Rotbee</p>
+
+        <div class="form-group">
+          <label class="form-label">نام کاربری</label>
+          <input type="text" id="adminUser" class="ltr" value="Kamran.K2K" placeholder="نام کاربری">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="passLabel">رمز عبور</label>
+          <input type="password" id="adminPass" class="ltr" placeholder="رمز عبور">
+        </div>
+
+        <div id="adminLoginError" class="alert-error" style="display:none;"></div>
+
+        <button class="btn btn-accent" onclick="Admin.login()">ورود به پنل</button>
+
+        <div style="text-align:center;margin-top:16px;">
+          <a href="index.html" style="color:var(--text-muted);font-size:13px;text-decoration:none;">← بازگشت به اپ کاربر</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ داشبورد ادمین ═══════════ -->
+<div id="dashboardAdminSection" class="section">
+  <div class="container">
+    <div class="app-header">
+      <div class="header-title">📊 پنل ادمین</div>
+      <div style="display:flex;gap:8px;">
+        <button class="header-btn" onclick="Admin.showHelp()">?</button>
+        <button class="header-btn" onclick="Admin.logout()">🚪</button>
+      </div>
+    </div>
+
+    <div class="glass-card" style="margin-bottom:20px;">
+      <h2 style="color:var(--accent);margin-bottom:6px;">🔐 تولید کد اشتراک</h2>
+      <p class="subtitle" style="text-align:right;">Device ID کاربر را وارد کنید تا کد ساخته شود</p>
+
+      <div class="form-group">
+        <label class="form-label">Device ID کاربر (۸ کاراکتر)</label>
+        <input type="text" id="genDeviceId" class="ltr" placeholder="مثال: A1B2C3D4" maxlength="8" style="font-size:18px;letter-spacing:3px;text-align:center;">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">نوع اشتراک</label>
+        <div id="planChips">
+          <span class="chip selected" data-plan="N" onclick="Admin.selectPlan('N', this)">عادی</span>
+          <span class="chip" data-plan="V" onclick="Admin.selectPlan('V', this)">VIP</span>
+          <span class="chip" data-plan="S" onclick="Admin.selectPlan('S', this)">ویژه رتبه</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">مدت زمان</label>
+        <div id="daysChips">
+          <span class="chip selected" data-days="30" onclick="Admin.selectDays(30, this)">۳۰ روزه</span>
+          <span class="chip" data-days="90" onclick="Admin.selectDays(90, this)">۹۰ روزه</span>
+          <span class="chip" data-days="180" onclick="Admin.selectDays(180, this)">۱۸۰ روزه</span>
+          <span class="chip" data-days="360" onclick="Admin.selectDays(360, this)">۳۶۰ روزه</span>
+        </div>
+      </div>
+
+      <div id="genError" class="alert-error" style="display:none;"></div>
+
+      <button class="btn btn-accent" onclick="Admin.generateCode()">✨ تولید کد اشتراک</button>
+    </div>
+
+    <div id="generatedCodeBox" class="hidden glass-card" style="background:rgba(16,185,129,0.1);border-color:var(--success);text-align:center;">
+      <p style="color:var(--text-muted);font-size:13px;margin-bottom:12px;">✅ کد اشتراک ساخته شد</p>
+      <div id="generatedCodeValue" style="font-family:monospace;font-size:24px;font-weight:bold;color:var(--success);letter-spacing:2px;padding:16px;background:rgba(0,0,0,0.3);border-radius:12px;margin-bottom:16px;direction:ltr;"></div>
+      <button class="btn btn-secondary" onclick="Admin.copyGeneratedCode()">📋 کپی کد</button>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:12px;">این کد را به کاربر (مثلاً در روبیکا) ارسال کنید</p>
+    </div>
+
+    <div class="glass-card" style="margin-top:20px;">
+      <h3 style="color:var(--accent);margin-bottom:12px;">📋 نکات مهم</h3>
+      <ul style="list-style:none;padding:0;font-size:13px;line-height:2;color:var(--text-muted);">
+        <li>• کاربر باید اپ کاربر را باز کند و Device ID خود را ببیند</li>
+        <li>• Device ID را اینجا وارد کنید</li>
+        <li>• نوع اشتراک و مدت را انتخاب کنید</li>
+        <li>• کد ساخته شده را با روبیکا/پیامک برای کاربر بفرستید</li>
+        <li>• کاربر کد را وارد می‌کند و اپ برایش فعال می‌شود</li>
+        <li>• کد فقط روی همان دستگاه (Device ID) کار می‌کند</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ مودال راهنما ═══════════ -->
+<div id="helpModalAdmin" class="tutorial-overlay hidden">
+  <div class="tutorial-box">
+    <h3 id="helpTitleAdmin">راهنما</h3>
+    <p id="helpTextAdmin"></p>
+    <button class="tutorial-btn" onclick="document.getElementById('helpModalAdmin').classList.add('hidden')">متوجه شدم</button>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").catch(e => console.warn("SW failed", e));
+}
+</script>
+</body>
+</html>
